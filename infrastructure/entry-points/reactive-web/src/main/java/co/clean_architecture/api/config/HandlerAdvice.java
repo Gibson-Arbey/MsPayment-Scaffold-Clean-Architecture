@@ -17,13 +17,25 @@ public class HandlerAdvice {
 
     @ExceptionHandler(DomainException.class)
     public Mono<ResponseEntity<ErrorResponse>> handleDomainException(DomainException ex) {
+        HttpStatus status = switch (ex.getErrorType()) {
+            case NOT_FOUND -> HttpStatus.NOT_FOUND;
+            case CONFLICT -> HttpStatus.CONFLICT;
+            case UNAUTHORIZED -> HttpStatus.UNAUTHORIZED;
+            case FORBIDDEN -> HttpStatus.FORBIDDEN;
+            case VALIDATION, BUSINESS_RULE, BAD_REQUEST -> HttpStatus.BAD_REQUEST;
+            case SERVICE_UNAVAILABLE -> HttpStatus.INTERNAL_SERVER_ERROR;
+        };
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+            .code(ex.getCode())
+            .message(ex.getMessage())
+            .timestamp(LocalDateTime.now())
+            .build();
+        log.error(errorResponse.toString());
+
         return Mono.just(
-            ResponseEntity.badRequest().body(
-                ErrorResponse.builder()
-                    .code(ex.getCode())
-                    .message(ex.getMessage())
-                    .timestamp(LocalDateTime.now())
-                    .build()
+            ResponseEntity.status(status).body(
+                errorResponse
             )
         );
     }

@@ -7,4 +7,6 @@ public abstract class DomainException extends RuntimeException {
     }
 
     public abstract String getCode();
+
+    public abstract ErrorTypeEnum getErrorType();
 }

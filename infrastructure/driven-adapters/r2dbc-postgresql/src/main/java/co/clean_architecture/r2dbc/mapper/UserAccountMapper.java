@@ -18,12 +18,12 @@ public class UserAccountMapper {
     }
 
     public UserAccount toDomain(UserAccountEntity entity) {
-        return UserAccount.builder()
-            .id(entity.getId())
-            .customerId(entity.getCustomerId())
-            .balance(entity.getBalance())
-            .status(entity.getStatus())
-            .createdAt(entity.getCreatedAt())
-            .build();
+        return UserAccount.restore(
+                entity.getId(),
+                entity.getCustomerId(),
+                entity.getBalance(),
+                co.clean_architecture.model.useraccount.StatusUserAccountEnum.valueOf(entity.getStatus()),
+                entity.getCreatedAt()
+        );
     }
 }

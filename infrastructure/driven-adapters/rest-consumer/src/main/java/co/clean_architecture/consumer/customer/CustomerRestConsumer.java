@@ -1,6 +1,7 @@
 package co.clean_architecture.consumer.customer;
 
 import co.clean_architecture.model.customer.Customer;
+import co.clean_architecture.model.customer.exception.CustomerNotExistsException;
 import co.clean_architecture.model.customer.gateways.CustomerRepository;
 import co.clean_architecture.model.exception.ExternalServiceUnavailableException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -26,7 +27,11 @@ public class CustomerRestConsumer implements CustomerRepository {
                 .retrieve()
                 .onStatus(
                     HttpStatus.NOT_FOUND::equals,
-                    response -> Mono.empty()
+                    response -> Mono.error(
+                            new CustomerNotExistsException(
+                                    "Customer not found with ID: " + customerId
+                            )
+                    )
                 )
                 .onStatus(HttpStatusCode::is5xxServerError,
                     response -> Mono.error(

@@ -5,12 +5,6 @@ spring:
     name: "ms-payment"
   devtools:
     add-properties: false
-  flyway:
-    url: jdbc:postgresql://localhost:5432/payment_db
-    user: postgres
-    password: 1234
-    baseline-on-migrate: true
-    enabled: true
   r2dbc:
     url: "r2dbc:postgresql://localhost:5432/payment_db"
     username: "postgres"

@@ -1,16 +1,16 @@
-package co.clean_architecture.model.useraccount.exception;
+package co.clean_architecture.usecase.useraccount.exception;
 
 import co.clean_architecture.model.exception.DomainException;
 import co.clean_architecture.model.exception.ErrorTypeEnum;
 
-public class UserAccountAlreadyExistsException extends DomainException {
-    public UserAccountAlreadyExistsException(String message) {
+public class StatusUserAccountNotValidException extends DomainException {
+    public StatusUserAccountNotValidException(String message) {
         super(message);
     }
 
     @Override
     public String getCode() {
-        return "USER_ACCOUNT_ALREADY_EXISTS";
+        return "STATUS_USER_ACCOUNT_NOT_VALID";
     }
 
     @Override

@@ -13,6 +13,9 @@ public class UserAccounRouter {
     public RouterFunction<ServerResponse> routes(UserAccountHandler handler) {
         return RouterFunctions.route()
                 .POST("/api/v1/user-accounts", handler::create)
+                .GET("/api/v1/user-accounts/{customerId}", handler::getByCustomerId)
+                .PATCH("/api/v1/user-accounts/{id}/balance", handler::updateUserAccountBalance)
+                .PATCH("/api/v1/user-accounts/{id}/status", handler::updateUserAccountStatus)
                 .build();
     }
 }

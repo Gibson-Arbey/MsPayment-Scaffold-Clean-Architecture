@@ -1,4 +1,4 @@
-package co.clean_architecture.usecase.useraccount;
+package co.clean_architecture.model.useraccount;
 
 public enum StatusUserAccountEnum {
     ACTIVE,
