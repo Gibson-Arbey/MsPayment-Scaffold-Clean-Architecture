@@ -1,5 +1,8 @@
 package co.clean_architecture.model.useraccount;
 
+import co.clean_architecture.model.customer.exception.CustomerNotExistsException;
+import co.clean_architecture.model.useraccount.exception.InvalidBalanceOperationException;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -13,10 +16,16 @@ public class UserAccount {
 
     private UserAccount(Long customerId, BigDecimal balance, LocalDate createdAt) {
         if (customerId == null) {
-            throw new IllegalArgumentException("customerId is required");
+            throw new CustomerNotExistsException("customerId is required");
         }
         if (balance == null || balance.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("balance must be >= 0");
+            throw new InvalidBalanceOperationException("balance must be >= 0");
+        }
+
+        if (balance.scale() > 2) {
+            throw new InvalidBalanceOperationException(
+                "Balance cannot have more than 2 decimal places"
+            );
         }
 
         this.customerId = customerId;

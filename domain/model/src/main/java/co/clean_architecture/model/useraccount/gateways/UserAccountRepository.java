@@ -16,4 +16,6 @@ public interface UserAccountRepository {
     Mono<Void> updateUserAccountStatus(Long userAccountId, String status);
 
     Mono<Boolean> existsByCustomerId(Long customerId);
+
+    Mono<BigDecimal> getBalanceByUserAccountId(Long id);
 }
