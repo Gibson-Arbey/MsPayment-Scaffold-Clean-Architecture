@@ -18,4 +18,6 @@ public interface UserAccountRepository {
     Mono<Boolean> existsByCustomerId(Long customerId);
 
     Mono<BigDecimal> getBalanceByUserAccountId(Long id);
+
+    Mono<UserAccount> getUserAccountById(Long id);
 }

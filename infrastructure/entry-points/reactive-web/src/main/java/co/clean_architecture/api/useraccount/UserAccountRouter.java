@@ -7,10 +7,10 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
-public class UserAccounRouter {
+public class UserAccountRouter {
 
     @Bean
-    public RouterFunction<ServerResponse> routes(UserAccountHandler handler) {
+    public RouterFunction<ServerResponse> userAccountRoutes(UserAccountHandler handler) {
         return RouterFunctions.route()
                 .POST("/api/v1/user-accounts", handler::create)
                 .GET("/api/v1/user-accounts/{customerId}", handler::getByCustomerId)

@@ -75,4 +75,10 @@ public class UserAccountAdapter implements UserAccountRepository {
     public Mono<BigDecimal> getBalanceByUserAccountId(Long id) {
         return userAccountR2dbcRepository.findBalanceById(id);
     }
+
+    @Override
+    public Mono<UserAccount> getUserAccountById(Long id) {
+        return userAccountR2dbcRepository.findById(id)
+                .map(userAccountMapper::toDomain);
+    }
 }

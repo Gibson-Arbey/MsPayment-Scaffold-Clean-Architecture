@@ -2,6 +2,7 @@ package co.clean_architecture.model.useraccount;
 
 import co.clean_architecture.model.customer.exception.CustomerNotExistsException;
 import co.clean_architecture.model.useraccount.exception.InvalidBalanceOperationException;
+import co.clean_architecture.model.useraccount.exception.StatusUserAccountNotValidException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -52,12 +53,20 @@ public class UserAccount {
     }
 
 
-    public void updateBalance(BigDecimal newBalance) {
-        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("balance must be >= 0");
+    public void validatePayment(BigDecimal amount) {
+        if (StatusUserAccountEnum.BLOCKED.name().equals(this.status)) {
+            throw new StatusUserAccountNotValidException("User account is BLOCKED");
         }
-        this.balance = newBalance;
+
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidBalanceOperationException("Payment amount must be positive");
+        }
+
+        if (this.balance.compareTo(amount) < 0) {
+            throw new InvalidBalanceOperationException("Insufficient balance");
+        }
     }
+
 
     public void changeStatus(StatusUserAccountEnum newStatus) {
         this.status = newStatus.name();

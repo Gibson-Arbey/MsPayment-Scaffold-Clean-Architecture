@@ -1,6 +1,5 @@
 package co.clean_architecture.usecase.useraccount;
 
-import co.clean_architecture.model.customer.exception.CustomerNotExistsException;
 import co.clean_architecture.model.customer.gateways.CustomerRepository;
 import co.clean_architecture.model.useraccount.UserAccount;
 import co.clean_architecture.model.useraccount.exception.InvalidBalanceOperationException;
@@ -10,7 +9,7 @@ import co.clean_architecture.model.useraccount.gateways.UserAccountRepository;
 import co.clean_architecture.usecase.useraccount.command.CreateUserAccountCommand;
 import co.clean_architecture.usecase.useraccount.command.UpdateUserAccounStatusCommand;
 import co.clean_architecture.usecase.useraccount.command.UpdateUserAccountBalanceCommand;
-import co.clean_architecture.usecase.useraccount.exception.StatusUserAccountNotValidException;
+import co.clean_architecture.model.useraccount.exception.StatusUserAccountNotValidException;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
