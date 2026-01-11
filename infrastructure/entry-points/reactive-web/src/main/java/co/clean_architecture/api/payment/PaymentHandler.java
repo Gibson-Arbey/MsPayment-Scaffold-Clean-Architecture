@@ -1,9 +1,11 @@
 package co.clean_architecture.api.payment;
 
+import co.clean_architecture.api.payment.mapper.PaymentCriteriaMapper;
 import co.clean_architecture.api.payment.request.CreatePaymentRequest;
 import co.clean_architecture.api.payment.response.PaymentResponse;
 import co.clean_architecture.api.useraccount.response.UserAccountResponse;
 import co.clean_architecture.model.payment.Payment;
+import co.clean_architecture.model.payment.criteria.PaymentCriteria;
 import co.clean_architecture.model.useraccount.UserAccount;
 import co.clean_architecture.usecase.payment.PaymentUseCase;
 import co.clean_architecture.usecase.payment.command.CreatePaymentCommand;
@@ -19,6 +21,9 @@ import reactor.core.publisher.Mono;
 public class PaymentHandler {
 
     private final PaymentUseCase paymentUseCase;
+
+    // mappers
+    private final PaymentCriteriaMapper paymentCriteriaMapper;
 
     public Mono<ServerResponse> createPayment(ServerRequest request) {
         return request.bodyToMono(CreatePaymentRequest.class)
@@ -44,6 +49,16 @@ public class PaymentHandler {
         return request.bodyToMono(String.class)
                 .flatMap(status -> paymentUseCase.updatePaymentStatus(paymentId, status))
                 .then(ServerResponse.noContent().build());
+    }
+
+    public Mono<ServerResponse> getAllPaymentsByFilters(ServerRequest request) {
+        PaymentCriteria criteria = paymentCriteriaMapper.fromRequest(request);
+        return ServerResponse.ok()
+            .body(
+                paymentUseCase.getAllPayments(criteria)
+                    .map(PaymentResponse::fromDomain),
+                    PaymentResponse.class
+            );
     }
 
     private Mono<ServerResponse> toResponse(Payment payment, HttpStatus status) {

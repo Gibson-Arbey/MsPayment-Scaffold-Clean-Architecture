@@ -39,6 +39,17 @@ public class PaymentAdapter implements PaymentRepository {
 
     @Override
     public Flux<Payment> getAllByFilters(PaymentCriteria criteria) {
-        return null;
+        return paymentR2dbcRepository.findAllByFilters(
+                criteria.getUserAccountId(),
+                criteria.getMinAmount(),
+                criteria.getMaxAmount(),
+                criteria.getCurrency(),
+                criteria.getStatus(),
+                criteria.getRegisteredFrom(),
+                criteria.getRegisteredTo(),
+                criteria.getLimit(),
+                criteria.getOffset()
+        ).map(paymentMapper::toDomain);
+
     }
 }

@@ -22,6 +22,10 @@ public class PaymentCriteria {
 
     private final LocalDateTime registeredTo;
 
+    private final int limit;
+
+    private final int offset;
+
     private PaymentCriteria(
             Long userAccountId,
             BigDecimal minAmount,
@@ -29,15 +33,24 @@ public class PaymentCriteria {
             String currency,
             String status,
             LocalDateTime registeredFrom,
-            LocalDateTime registeredTo
+            LocalDateTime registeredTo,
+            int limit,
+            int offset
     ) {
-        this.userAccountId = userAccountId;
-        this.minAmount = minAmount;
-        this.maxAmount = maxAmount;
-        this.currency = currency;
-        this.status = status;
-        this.registeredFrom = registeredFrom;
-        this.registeredTo = registeredTo;
+        this.userAccountId = userAccountId != null ? userAccountId : 0L;
+        this.minAmount = minAmount != null ? minAmount : BigDecimal.ZERO;
+        this.maxAmount = maxAmount != null ? maxAmount : BigDecimal.valueOf(Double.MAX_VALUE);
+        this.currency = currency != null ? currency : "";
+        this.status = status != null ? status : "";
+        this.registeredFrom = registeredFrom != null
+                ? registeredFrom
+                : LocalDateTime.of(1970, 1, 1, 0, 0);
+        this.registeredTo = registeredTo != null
+                ? registeredTo
+                : LocalDateTime.now();
+
+        this.limit = limit;
+        this.offset = offset;
     }
 
     public static PaymentCriteria of(
@@ -47,7 +60,9 @@ public class PaymentCriteria {
             String currency,
             String status,
             LocalDateTime registeredFrom,
-            LocalDateTime registeredTo
+            LocalDateTime registeredTo,
+            Integer limit,
+            Integer offset
     ) {
         return new PaymentCriteria(
                 userAccountId,
@@ -56,7 +71,9 @@ public class PaymentCriteria {
                 currency,
                 status,
                 registeredFrom,
-                registeredTo
+                registeredTo,
+                limit != null ? limit : 20,
+                offset != null ? offset : 0
         );
     }
 }

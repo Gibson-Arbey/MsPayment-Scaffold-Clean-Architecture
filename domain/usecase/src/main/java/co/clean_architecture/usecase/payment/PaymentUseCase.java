@@ -3,6 +3,7 @@ package co.clean_architecture.usecase.payment;
 import co.clean_architecture.model.payment.CurrencyEnum;
 import co.clean_architecture.model.payment.Payment;
 import co.clean_architecture.model.payment.StatusPaymentEnum;
+import co.clean_architecture.model.payment.criteria.PaymentCriteria;
 import co.clean_architecture.model.payment.exception.PaymentNotCreatedException;
 import co.clean_architecture.model.payment.gateways.PaymentRepository;
 import co.clean_architecture.model.useraccount.exception.UserAccountNotFoundException;
@@ -10,6 +11,7 @@ import co.clean_architecture.model.useraccount.gateways.UserAccountRepository;
 import co.clean_architecture.usecase.payment.command.CreatePaymentCommand;
 import co.clean_architecture.usecase.payment.exception.StatusPaymentNotValidException;
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
@@ -40,6 +42,10 @@ public class PaymentUseCase {
 
             return paymentRepository.updateStatus(paymentId, status);
         });
+    }
+
+    public Flux<Payment> getAllPayments(PaymentCriteria criteria) {
+        return paymentRepository.getAllByFilters(criteria);
     }
 
 

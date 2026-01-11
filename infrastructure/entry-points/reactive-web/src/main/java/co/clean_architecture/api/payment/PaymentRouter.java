@@ -15,6 +15,7 @@ public class PaymentRouter {
             .POST("/api/v1/payment", handler::createPayment)
             .GET("/api/v1/payment/{id}", handler::getPaymentById)
             .PATCH("/api/v1/payment/{id}/status", handler::updatePaymentStatus)
+            .GET("/api/v1/payments", handler::getAllPaymentsByFilters)
             .build();
     }
 }
